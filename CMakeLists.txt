@@ -25,6 +25,8 @@ option(PROTOBUF_MATCHERS_FETCH_GTEST "Download GTest via FetchContent if not fou
 set(PROTOBUF_MATCHERS_GTEST_FETCH_TAG ${PROTOBUF_MATCHERS_GTEST_DEFAULT_FETCH_TAG}
     CACHE STRING "Git tag or commit to use for GTest FetchContent")
 
+option(PROTOBUF_MATCHERS_BUILD_TESTING "Build the protobuf-matchers tests" ON)
+
 # -----------------------------------------------------------------------------
 # Protobuf Dependency
 # -----------------------------------------------------------------------------
@@ -94,9 +96,9 @@ target_link_libraries(protobuf-matchers PUBLIC
     protobuf::libprotobuf
     GTest::gmock)
 
-include(CTest)
-include(GoogleTest)
-if(BUILD_TESTING)
+if(PROTOBUF_MATCHERS_BUILD_TESTING)
+    include(CTest)
+    include(GoogleTest)
     set(PROTO_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated")
     add_library(protobuf-matchers-proto OBJECT "${CMAKE_CURRENT_LIST_DIR}/protobuf-matchers/test.proto")
     target_link_libraries(protobuf-matchers-proto PUBLIC protobuf::libprotobuf)
